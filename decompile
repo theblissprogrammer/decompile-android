@@ -1,0 +1,20 @@
+#!/bin/bash
+
+file_apk=$(echo $1 | awk -F"." '{print $1}')'_temp.apk'
+dex2jar=$(echo $1 | awk -F"." '{print $1}')'_temp-dex2jar.jar'
+file_jar=$(echo $1 | awk -F"." '{print $1}')'.jar'
+
+rm -rf temp
+cp $1 temp.apk
+echo 'Decoding...'
+./apktool d -f -r temp.apk
+echo 'Build...'
+rm temp.apk
+./apktool b -o $file_apk temp --use-aapt2
+echo 'dex2jar...'
+./dex2jar/d2j-dex2jar.sh $file_apk
+rm $file_apk
+#rm -rf temp
+echo 'open ...'
+mv $dex2jar $file_jar
+java -jar jd-gui.jar $file_jar
