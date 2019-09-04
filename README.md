@@ -3,4 +3,4 @@ Decompile any android apk
 
 To run:
 
-> ./decompile <APK>
+> ./decompile location_of_apk
